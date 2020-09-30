@@ -1,0 +1,1128 @@
+<html>
+
+<head>
+    <title>Deadlines Countdown Timer</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/2.2.2/moment-duration-format.min.js"></script>
+    <script type="text/javascript">
+    var backi = -1;
+
+    // DATABASE
+    var deadlines = new Array();
+
+    // ISER 2018
+    // http://www.iser2018.org/call-for-papers
+    // Extended Abstract Deadline: 1 May 2018 24:00:00 AoE
+    // Full Paper Deadline: 1 Oct 2018 24:00:00 AoE
+    // Conference: 5-8 Nov 2018
+    // deadlines.push({
+    //   venue: "ISER 2018",
+    //   area: "Robotics",
+    //   deadline: moment('2018-08-20 24:00:00-12:00').tz(
+    //         'America/Los_Angeles'),
+    // });
+    // deadlines.push({
+    //   venue: "ISER 2018 (extended)",
+    //   area: "Robotics",
+    //   deadline: moment('2018-08-31 24:00:00-12:00').tz(
+    //         'America/Los_Angeles'),
+    //   highlight: 1,
+    // });
+
+    // ICRA 2019
+    // http://www.ieee-ras.org/component/rseventspro/event/1146-icra-2019-2019-international-conference-on-robotics-and-automation-icra
+    // Deadline: 10 Sept 2018, 23:59 PT
+    // Conference: 20-24 May 2019
+    // deadlines.push({
+    //   venue: "ICRA 2019",
+    //   area: "Robotics",
+    //   deadline: moment('2018-09-15 23:59:59').tz('America/Los_Angeles')
+    // });
+
+    // Amazon Research Awards
+    // https://ara.amazon-ml.com/proposals/#apply
+    // Deadline: 15 Setp 2018, 23:59 PT
+    // deadlines.push({
+    //   venue: "Amazon Research Awards",
+    //   area: "Funding",
+    //   deadline: moment('2018-09-15 23:59:59').tz('America/Los_Angeles'),
+    // highlight: 1,
+    // });
+
+    // ICLR 2019
+    // http://www.iclr.cc/doku.php?id=iclr2018:main
+    // Deadline (est'd): 27 October 2018
+    // Conference (est'd): 30 Apr-3 May 2019
+    // deadlines.push({
+    //   venue: "ICLR 2019",
+    //   area: "Machine Learning",
+    //   deadline: moment('2018-09-27 12:00:00').tz('America/Los_Angeles'),
+    // });
+
+    // AWS Cloud Credits for Research (Fall)
+    // https://aws.amazon.com/research-credits/
+    // Deadline: 30 Sept 2018
+    // deadlines.push({
+    //   venue: "AWS Cloud Credits for Research (Fall)",
+    //   area: "Funding",
+    //   deadline: moment('2018-09-30 17:00:00').tz('America/Los_Angeles'),
+    //   highlight: 1,
+    // });
+
+    // NIPS Deep RL Workshop 2018
+    // https://sites.google.com/view/deep-rl-workshop-nips-2018
+    // Deadline: 12 Oct 2018 23:59:00 AoE
+    // Conference: 3-8 Dec 2018
+    // deadlines.push({
+    //   venue: "NIPS Deep RL Workshop 2018",
+    //   area: "Machine Learning",
+    //   deadline: moment('2018-10-12 23:59:59-12:00').tz('America/Los_Angeles'),
+    //   highlight: 1,
+    // })
+
+    // NIPS Infer2Control 2018
+    // https://sites.google.com/view/infer2control-nips2018/call-for-papers?authuser=0
+    // Deadline: 12 Oct 2018 23:59:00 AoE
+    // Conference: 3-8 Dec 2018
+    // deadlines.push({
+    //   venue: "NIPS Infer2Control Workshop 2018",
+    //   area: "Machine Learning",
+    //   deadline: moment('2018-10-12 24:00:00-12:00').tz('America/Los_Angeles'),
+    // })
+
+    // NIPS Continual Learning Workshop 2018
+    // https://sites.google.com/view/continual2018/
+    // Deadline: 19 October 2018 23:59:59
+    // Conference: 3-8 Dec 2018
+    // deadlines.push({
+    //   venue: "NIPS Continual Learning Workshop 2018",
+    //   area: "Machine Learning",
+    //   deadline: moment('2018-10-25 23:59:59-12:00').tz('America/Los_Angeles'),
+    //   url: "https://sites.google.com/view/continual2018/call-for-papers",
+    //   highlight: 1,
+    // })
+
+    // NIPS Workshop on Imitation Learning and its Challenges in Robotics
+    // https://sites.google.com/view/nips18-ilr
+    // Deadline: 19 October 2018 23:59:59 AoE
+    // Conference 3-8 Dec 2018
+    // deadlines.push({
+    //   venue: "NIPS Workshop on Imitation Learning and its Challenges in Robotics",
+    //   area: "Machine Learning",
+    //   deadline: moment('2018-10-19 24:00:00-12:00').tz('America/Los_Angeles'),
+    // });
+
+
+    // AWS Cloud Credits for Research (Spring)
+    // https://aws.amazon.com/research-credits/
+    // Deadline: 31 Dec 2018
+    // deadlines.push({
+    //   venue: "AWS Cloud Credits for Research (Spring)",
+    //   area: "Funding",
+    //   deadline: moment('2018-12-31 17:00:00').tz('America/Los_Angeles'),
+    //   url: "https://aws.amazon.com/research-credits/",
+    //   highlight: 1,
+    // })
+
+    // RSS 2019
+    // http://www.roboticsconference.org/information/cfp/
+    // Deadline: 1 Feb 2019
+    // deadlines.push({
+    //   venue: "RSS 2019",
+	    //   area: "Robotics",
+    //   deadline: moment('2019-02-01 23:59:59').tz('America/Los_Angeles'),
+    //   url: "http://www.roboticsconference.org/information/cfp/",
+    //   highlight: 1,
+    // });
+
+    // ICML 2019 - Abstract
+    // https://icml.cc/Conferences/2019/CallForPapers
+    // Deadline: 18 Jan 2019
+    // Conference: 10-15 June 2019
+    // deadlines.push({
+    //   venue: "ICML 2019 - Abstract",
+    //   area: "Machine Learning",
+    //   deadline: moment('2019-01-18 15:59:059').tz('America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2019/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // ICML 2019 - Full Paper
+    // https://icml.cc/Conferences/2019/CallForPapers
+    // Deadline: 23 Jan 2019
+    // Conference: 10-15 June 2019
+    // deadlines.push({
+    //   venue: "ICML 2019 - Full Paper",
+    //   area: "Machine Learning",
+    //   deadline: moment('2019-01-23 15:59:059').tz('America/Los_Angeles'),
+    //   url: " https://icml.cc/Conferences/2019/CallForPapers",
+    // });
+
+
+    // IROS 2019
+    // http://www.iros2019.org/
+    // Deadline: 1 Mar 2019
+    // Conference: 3-8 Nov 2019
+    // deadlines.push({
+    //   venue: "IROS 2019",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2019-03-01 23:59:59', 'America/Los_Angeles'),
+    //   url: "http://www.iros2019.org/",
+    // });
+
+    // ICLR Workshop: Structure & Priors in Reinforcement Learning
+    // http://spirl.info/2019/call/
+    // Deadline: 7 Mar 2019 23:59 AoE
+    // Conference: 6 May 2019
+    // deadlines.push({
+    //   venue: "SPiRL (ICLR Workshop)",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2019-03-07 23:59:59', 'Etc/GMT+12'),
+    //   url: "http://spirl.info/2019/call/",
+    // });
+
+    // ICLR Workshop: Learning with Limited Labeled Data
+    // https://lld-workshop.github.io/
+    // Deadline: 15 Mar 2019 23:59 GMT+1
+    // Conference: 6 May 2019
+    // deadlines.push({
+    //   venue: "LLD (ICLR Workshop)",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2019-03-15 23:59:59', 'Etc/GMT+1'),
+    //   url: "https://lld-workshop.github.io/"
+    // });
+
+    // ICLR Workshop: Task-Agnostic Reinforcement Learning
+    // https://tarl2019.github.io/
+    // Deadline: 29 Mar 2019 AoE
+    // Conference: 6 May 2019
+    // deadlines.push({
+    //   venue: "TARL (ICLR Workshop)",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2019-03-29 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://tarl2019.github.io/",
+    // });
+
+    // ICML Workshop: Multi-Task and Lifeline Reinforcement Learning
+    // https://sites.google.com/view/mtlrl/home#h.p_twoAdKt9OVF4
+    // Deadline: 28 Apr 2019 AoE
+    // Conference: 14 June 2019
+    // deadlines.push({
+    //     venue: "MTLRL (ICML Workshop)",
+    //     area: "Machine Learning",
+    //     deadline: moment.tz('2019-04-28 23:59:59', 'Etc/GMT+12'),
+    //     url: "https://sites.google.com/view/mtlrl/home",
+    // });
+
+    // NIPS 2019
+    // https://nips.cc/Conferences/2019/Dates
+    // Deadline (est'd): 18 May 2019
+    // Conference (est'd): 3-7 Dec 2019
+    // deadlines.push({
+    //   venue: "NIPS 2019 - Abstract",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2019-05-16 13:00:00', 'America/Los_Angeles'),
+    //   url: "https://nips.cc/Conferences/2019/Dates",
+    //   highlight: 1,
+    // });
+    // deadlines.push({
+    //   venue: "NIPS 2019 - Paper",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2019-05-23 13:00:00', 'America/Los_Angeles'),
+    //   url: "https://nips.cc/Conferences/2019/Dates",
+    //   highlight: 1,
+    // });
+
+    // AWS Cloud Credits for Research (Fall)
+    // https://aws.amazon.com/research-credits/
+    // Deadline: 30 June 2018
+    // deadlines.push({
+    //    venue: "AWS Cloud Credits for Research (June)",
+    //    area: "Funding",
+    //    deadline: moment('2019-06-30 17:00:00').tz('America/Los_Angeles'),
+    //    highlight: 1,
+    // });
+
+
+
+    // CoRL 2019
+    // http://www.robot-learning.org/
+    // Deadline (est'd): 28 June 2018
+    // Conference (est'd): 13-15 Nov 2018
+    // deadlines.push({
+    //    venue: "CoRL 2019",
+    //    area: "Robotics",
+    //    deadline: moment.tz('2019-07-07 17:00:00', 'America/Los_Angeles'),
+    //    url: "http://www.robot-learning.org",
+    //    approx: 1,
+    //  });
+
+
+    // ICRA 2020
+    // http://www.ieee-ras.org/component/rseventspro/event/1146-icra-2019-2019-international-conference-on-robotics-and-automation-icra
+    // Deadline (est'd): 10 Sept 2019, 23:59 PT
+    // Conference (est'd): 20-24 May 2020
+    // deadlines.push({
+    //   venue: "ICRA 2020",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2019-09-15 23:59:59', 'America/Los_Angeles'),
+    //   url: "http://www.ieee-ras.org/students/events/event/1144-icra-2020-ieee-international-conference-on-robotics-and-automation-icra",
+    //   approx: 1,
+    // });
+
+    // ICLR 2020
+    // https://iclr.cc/
+    // Deadline (est'd): 27 October 2019
+    // Conference (est'd): 30 Apr-3 May 2020
+    // deadlines.push({
+    //   venue: "ICLR 2020",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2019-09-27 12:00:00', 'America/Los_Angeles'),
+    // });
+
+    // RSS 2019
+    // http://www.roboticsconference.org/information/cfp/
+    // Deadline: 1 Feb 2019
+    // deadlines.push({
+    //   venue: "RSS 2019",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-01-30 23:59:59', 'Etc/GMT+12'),
+    //   url: "http://www.roboticsconference.org/information/cfp/",
+    //   highlight: 1,
+    // });
+
+    // ICML 2019 - Abstract
+    // https://icml.cc/Conferences/2019/CallForPapers
+    // Deadline: 18 Jan 2019
+    // Conference: 10-15 June 2019
+    // deadlines.push({
+    //   venue: "ICML 2019 - Abstract",
+    //   area: "Machine Learning",
+    //   deadline: moment('2020-01-31 03:59:59').tz('America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2020/Dates",
+    //   highlight: 1,
+    // });
+
+    // ICML 2019 - Full Paper
+    // https://icml.cc/Conferences/2019/CallForPapers
+    // Deadline: 23 Jan 2019
+    // Conference: 10-15 June 2019
+    // deadlines.push({
+    //   venue: "ICML 2019 - Full Paper",
+    //   area: "Machine Learning",
+    //   deadline: moment('2020-02-07 03:59:59').tz('America/Los_Angeles'),
+    //   url: " https://icml.cc/Conferences/2020/Dates",
+    //   highlight: 1,
+    // });
+
+    // ICML 2020 - Supplemental
+    // http://icml.cc
+    // Deadline: 19 Feb 2020
+    // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 - Supplemental",
+    //   area: "Machine Learning",
+    //   deadline: moment('2020-02-20 03:59:59').tz('America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2020/StyleAuthorInstructions",
+    //   highlight: 1,
+    // });
+
+    // IROS 2020
+    // http://www.iros2020.org/2submission/CallforPapers.pdf
+    // Deadline: 1 Mar 2020
+    // Conference: 25-29 Oct 2020
+    // deadlines.push({
+    //   venue: "IROS 2020",
+    //   area: "Robotics",
+    //   deadline: moment('2020-03-01 23:59:59').tz('America/Los_Angeles'),
+    //   url: "http://www.iros2020.org/2submission/CallforPapers.pdf",
+    // });
+
+    // RSS 2020 Workshop on Visual Learning and Reasoning for Robotics
+    // https://sites.google.com/view/rss20vlrr
+    // Deadline: 02 Apr 2020 AoE
+    // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "RSS 2020 Workshop: Visual Learning and Reasoning for Robotics",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-05-04 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/rss20vlrr",
+    //   highlight: 1,
+    // });
+
+    // ICRA 2020 Workshop on Machine Learning in Planning and Control
+    // https://sites.google.com/view/mlpc-icra2020
+    // Deadline: 08 Apr 2020 AoE
+    // Conference: 31 May-04 Jun 2020
+    // deadlines.push({
+    //   venue: "ICRA 2020 Workshop: Machine Learning in Planning and Control",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-04-08 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/mlpc-icra2020",
+    // });
+
+    // // RSS 2020 Workshop on Learning in Task and Motion Planning
+    // // https://ipvs.informatik.uni-stuttgart.de/mlr/rss2020Workshop/#overview
+    // // Deadline: 09 Apr 2020 AoE
+    // // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "RSS 2020 Workshop: Learning in Task and Motion Planning",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-04-09 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://ipvs.informatik.uni-stuttgart.de/mlr/rss2020Workshop/#overview",
+    // });
+
+    // RSS 2020 Workshop on Good Citizens of Robotics Research
+    // https://sites.google.com/view/rss20-gcr/home
+    // Deadline: ?? Apr 2020 AoE
+    // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "RSS 2020 Workshop: Good Citizens of Robotics Research",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-04-09 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/rss20-gcr/home",
+    //   highlight: 1,
+    //   approx: 1,
+    // });
+
+    // ICRA 2020 Workshop on Robustness in Robot Manipulation
+    // https://sites.google.com/view/icra2020robustness
+    // Deadline: 10 Apr 2020
+    // Conference: 31 May-04 Jun 2020
+    // deadlines.push({
+    //   venue: "ICRA 2020 Workshop: Robustness in Robot Manipulation",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-04-10 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/icra2020robustness",
+    // });
+
+    // NeurIPS 2020 - Abstract
+    // http://neurips.cc
+    // Deadline: 05 May 2020
+    // Conference: 6-12 December 2020
+    // deadlines.push({
+    //   venue: "NeurIPS 2020 - Abstract",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-05-27 12:59:59', 'America/Los_Angeles'),
+    //   url: "https://neurips.cc",
+    //   highlight: 1,
+    // });
+
+    // RSS 2020 Workshop on Structured Approaches to Robot Learning
+    // https://sites.google.com/view/rss20-sarl
+    // Deadline: 09 Apr 2020 AoE
+    // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "RSS 2020 Workshop: Structured Approaches to Robot Learning",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-05-31 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/rss20-sarl",
+    //   highlight: 1,
+    // });
+
+    // NeurIPS 2020 - Paper
+    // http://neurips.cc
+    // Deadline: 12 May 2020
+    // Conference: 6-12 Dec 2020
+    // deadlines.push({
+    //   venue: "NeurIPS 2020 - Paper",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-05 12:59:59', 'America/Los_Angeles'),
+    //   url: "https://nips.cc/Conferences/2020/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // NeurIPS 2020 - Supplementary
+    // http://neurips.cc
+    // Deadline: 12 May 2020
+    // Conference: 6-12 Dec 2020
+    // deadlines.push({
+    //   venue: "NeurIPS 2020 - Supplementary",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-11 12:59:59', 'America/Los_Angeles'),
+    //   url: "https://nips.cc/Conferences/2020/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // // ICML Workshops
+    // // https://www.icml.cc/Conferences/2020/Schedule?showEvent=5741
+    // // Deadline: ?? Apr 2020
+    // // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: Generalization in RL",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-10 18:00:00', 'America/Los_Angeles'),
+    //   url: "https://www.icml.cc/Conferences/2020/Schedule?showEvent=5741",
+    //   highlight: 1,
+    // });
+
+
+    // // ICML 2020 Workshops - Lifelong Learning
+    // // https://lifelongml.github.io/cfp/
+    // // Deadline: 31 May 2020
+    // // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: Lifelong Learning",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-10 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://lifelongml.github.io/cfp/",
+    //   highlight: 1,
+    // });
+
+    // // ICML 2020 Workshops - Continual Learning
+    // // https://sites.google.com/corp/view/cl-icml/
+    // // Deadline: 31 May 2020
+    // // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: Continual Learning",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-12 23:59:59', 'GMT'),
+    //   url: "https://sites.google.com/view/cl-icml/",
+    //   highlight: 1,
+    // });
+
+    // ICML 2020 Workshop on Uncertainty and Robustness in Deep Learning
+    // https://sites.google.com/view/udlworkshop2020
+    // Deadline: 22 May 2020
+    // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: Uncertainty and Robustness in Deep Learning",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-12 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/udlworkshop2020",
+    //   highlight: 1,
+    // });
+
+    // RL for Real Life
+    // https://lifelongml.github.io/cfp/
+    // Deadline: 31 May 2020
+    // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "Virtual Conference: RL 4 Real Life",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-15 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://sites.google.com/view/RL4RealLife",
+    //   highlight: 1,
+    // });
+
+    // RL for Real Life - Camera Ready
+    // https://sites.google.com/view/RL4RealLife
+    // Deadline: 23 June 2020
+    // Conference: 27-28 June 2020
+    // deadlines.push({
+    //   venue: "Virtual Conference: RL 4 Real Life - Camera Ready",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-23 23:59:59', 'America/Los_Angeles'),
+    //   url: "https://sites.google.com/view/RL4RealLife",
+    //   highlight: 1,
+    // });
+
+    // BayLearn
+    // http://www.baylearn.org/submissions
+    // Deadline: 18 June 2020
+    // Conference: 15 Oct 2020
+    // deadlines.push({
+    //   venue: "Virtual Conference: BayLearn",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-25 23:59:59', 'America/Los_Angeles'),
+    //   url: "http://www.baylearn.org/",
+    //   highlight: 1,
+    // });
+
+    // ICML 2020 Workshop on Biases, Invariances, and Generalization
+    // https://sites.google.com/view/udlworkshop2020
+    // Deadline: 26 June 2020
+    // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: BIG - Camera Ready",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-07-08 17:00:00', 'America/Los_Angeles'),
+    //   url: "https://biases-invariances-generalization.github.io/submit.html",
+    //   approx: 1,
+    //   highlight: 1,
+    // });
+
+    // // ICML 2020 Workshops - Lifelong ML
+    // // https://lifelongml.github.io/cfp/
+    // // Deadline: 31 May 2020
+    // // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: LifelongML - Camera Ready",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-07-08 23:59:59', 'America/Los_Angeles'),
+    //   url: "https://lifelongml.github.io/cfp/",
+    //   highlight: 1,
+    // });
+
+    // // RSS 2020 Workshop on Visual Learning and Reasoning for Robotics
+    // // https://sites.google.com/view/rss20vlrr
+    // // Deadline: 02 Apr 2020 AoE
+    // // Conference: 12-16 July 2020
+    // deadlines.push({
+    //   venue: "RSS 2020 Workshop: VLRR - Camera Ready",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-07-10 23:59:59', 'America/Los_Angeles'),
+    //   url: "https://sites.google.com/view/rss20vlrr",
+    //   highlight: 1,
+    // });
+
+    // ICML 2020 Workshops - RealML
+    // https://realworldml.github.io/cfp/
+    // Deadline: 31 May 2020
+    // Conference: 18 July 2020
+    // deadlines.push({
+    //   venue: "ICML 2020 Workshop: RealML",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-06-15 23:59:59', 'Etc/GMT+12'),
+    //   url: "https://realworldml.github.io/cfp/",
+    //   highlight: 1,
+    // });
+
+    // NeurIPS 2020 - Reviews
+    // http://neurips.cc
+    // Deadline: 12 May 2020
+    // Conference: 6-12 Dec 2020
+    // deadlines.push({
+    //   venue: "NeurIPS 2020 (Reviews)",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-07-22 23:59:59', 'America/Los_Angeles'),
+    //   url: "https://nips.cc/Conferences/2020/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // CoRL 2020
+    // https://www.robot-learning.org/home/paper-submission
+    // Deadline: ?? July 2020
+    // Conference: ?? Oct 2020
+    // deadlines.push({
+    //   venue: "CoRL 2020 - Supplemental",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-08-04 11:59:59', 'America/Los_Angeles'),
+    //   url: "https://www.robot-learning.org/author-information/call-for-papers",
+    //   highlight: 1,
+    // });
+
+    // NeurIPS 2020 - Rebuttals
+    // http://neurips.cc
+    // Deadline: 12 May 2020
+    // Conference: 6-12 Dec 2020
+    // deadlines.push({
+    //   venue: "NeurIPS 2020 - Rebuttal",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-08-13 12:59:59', 'America/Los_Angeles'),
+    //   url: "https://nips.cc/Conferences/2020/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // CoRL 2020 - Reviews
+    // https://www.robot-learning.org/home/paper-submission
+    // Deadline: ?? July 2020
+    // Conference: ?? Oct 2020
+    // deadlines.push({
+    //   venue: "CoRL 2020 - Reviews",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-09-05 11:59:59', 'America/Los_Angeles'),
+    //   url: "https://www.robot-learning.org/author-information/call-for-papers",
+    //   highlight: 1,
+    // });
+
+    // IROS 2020 Workshops
+    // http://www.iros2020.org/3program/Workshops.html
+    // Deadline: ?? Auguest 2020
+    // Conference: 25-29 Oct 2020
+    // deadlines.push({
+    //   venue: "IROS 2020 Workshops",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-08-20 03:59:59', 'Etc/GMT+12'),
+    //   url: "http://www.iros2020.org/3program/Workshops.html",
+    //   approx: 1,
+    // });
+
+    // CoRL 2020 - Rebuttal
+    // https://www.robot-learning.org/home/paper-submission
+    // Deadline: 28 July 2020
+    // Conference: 16-18 Nov 2020
+    // deadlines.push({
+    //   venue: "CoRL 2020 - Rebuttal",
+    //   area: "Robotics",
+    //   deadline: moment.tz('2020-09-16 11:59:59', 'America/Los_Angeles'),
+    //   url: "https://www.robot-learning.org/author-information/call-for-papers",
+    //   highlight: 1,
+    // });
+
+    // ICLR 2021
+    // https://iclr.cc/Conferences/2021/Dates
+    // Deadline: ?? Sept 2020
+    // Conference: ?? Apr 2021
+    // deadlines.push({
+    //   venue: "ICLR 2021 - Abstract",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-09-28 07:59:59', 'America/Los_Angeles'),
+    //   url: "https://iclr.cc/Conferences/2021/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // ICLR 2021
+    // https://iclr.cc/Conferences/2021/Dates
+    // Deadline: ?? Sept 2020
+    // Conference: ?? Apr 2021
+    // deadlines.push({
+    //   venue: "ICLR 2021 - Paper",
+    //   area: "Machine Learning",
+    //   deadline: moment.tz('2020-10-02 07:59:59', 'America/Los_Angeles'),
+    //   url: "https://iclr.cc/Conferences/2021/CallForPapers",
+    //   highlight: 1,
+    // });
+
+    // deadlines.push({
+    //   venue: "Amazon Research Awards - AWS AI",
+    //   area: "Funding",
+    //   deadline: moment.tz('2020-10-11 17:00:00', 'America/Los_Angeles'),
+    //   url: "https://www.amazon.science/research-awards/call-for-proposals/aws-ai",
+    //   highlight: 1,
+    // });
+
+    // Garage 2020.10 Release
+    // https://github.com/rlworkgroup/garage
+    // Deadline: 31 Oct 2020
+    deadlines.push({
+      venue: "Garage 2020.10",
+      area: "Software",
+      cat: "Software",
+      deadline: moment.tz('2020-10-31 23:59:59', 'America/Los_Angeles'),
+      url: "https://github.com/rlworkgroup/garage",
+      highlight: 1,
+    });
+
+    // ICRA 2021
+    // https://www.icra2021.org/contribute/call-for-papers
+    // Deadline: ?? Sept 2020
+    // Conference: ?? May 2021
+    deadlines.push({
+      venue: "ICRA 2021",
+      area: "Robotics",
+      cat: "Conference",
+      deadline: moment.tz('2020-10-31 23:59:59', 'America/Los_Angeles'),
+      url: "https://www.icra2021.org/contribute/call-for-papers",
+    });
+
+    // RSS 2021
+    // http://www.roboticsconference.org/information/cfp/
+    // Deadline: ?? Feb 2021
+    deadlines.push({
+      venue: "RSS 2021",
+      area: "Robotics",
+      cat: "Conference",
+      deadline: moment.tz('2021-01-30 23:59:59', 'Etc/GMT+12'),
+      url: "http://www.roboticsconference.org/information/cfp/",
+      approx: 1,
+    });
+
+    // ICML 2021
+    // https://icml.cc/Conferences/2021/CallForPapers
+    // Deadline: ?? Jan 2019
+    // Conference: 17-24 July 2021
+    deadlines.push({
+      venue: "ICML 2021",
+      area: "Machine Learning",
+      cat: "Conference",
+      deadline: moment.tz('2021-02-07 23:59:59', 'Etc/GMT+12'),
+      url: "https://icml.cc/Conferences/2021/Dates",
+      approx: 1,
+    });
+
+    // Fall 2020 Coursework
+    // CS545 Robotics
+    // HW2
+    deadlines.push({
+      venue: "CS545 HW2",
+      area: "Coursework",
+      cat: "Coursework",
+      deadline: moment.tz('2020-10-04 23:59:59', 'America/Los_Angeles'),
+      url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+      highlight: 1,
+    });
+
+    // Lab2
+    deadlines.push({
+    venue: "CS545 Lab2",
+    area: "Coursework",
+    cat: "Coursework",
+    deadline: moment.tz('2020-10-14 23:59:59', 'America/Los_Angeles'),
+    // url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+    approx: 1,
+    });
+
+    // HW3
+    // deadlines.push({
+    // venue: "CS545 HW3",
+    // area: "Coursework",
+    // deadline: moment.tz('2020-10-04 23:59:59', 'America/Los_Angeles'),
+    // url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+    // approx: 1,
+    // });
+
+    // // Lab3
+    // deadlines.push({
+    // venue: "CS545 Lab3",
+    // area: "Coursework",
+    // deadline: moment.tz('2020-10-04 23:59:59', 'America/Los_Angeles'),
+    // url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+    // approx: 1,
+    // });
+
+    // // HW4
+    // deadlines.push({
+    // venue: "CS545 HW4",
+    // area: "Coursework",
+    // deadline: moment.tz('2020-10-04 23:59:59', 'America/Los_Angeles'),
+    // url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+    // approx: 1,
+    // });
+
+    // // Lab4
+    // deadlines.push({
+    // venue: "CS545 Lab4",
+    // area: "Coursework",
+    // deadline: moment.tz('2020-10-04 23:59:59', 'America/Los_Angeles'),
+    // url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+    // approx: 1,
+    // });
+
+    // CS527 Applied Machine Learning for Games
+    // Midterm
+    deadlines.push({
+      venue: "CS527 Midterm - Presentation & EDD",
+      area: "Coursework",
+      cat: "Coursework",
+      deadline: moment.tz('2020-10-13 14:00:00', 'America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2021/Dates",
+      highlight: 1,
+    });
+
+    // Final
+    deadlines.push({
+      venue: "CS527 Final - Presentation & EDD",
+      area: "Coursework",
+      cat: "Coursework",
+      deadline: moment.tz('2020-11-24 14:00:00','America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2021/Dates",
+      highlight: 1,
+    });
+
+    // Code & Final Paper
+    deadlines.push({
+      venue: "CS527 Final - Code & Final Paper",
+      area: "Coursework",
+      cat: "Coursework",
+      deadline: moment.tz('2020-12-01 23:59:59', 'America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2021/Dates",
+      highlight: 1,
+    });
+
+    // filter doesn't work yet
+    function filterDeadlines(catergories) {
+        deadlines = deadlines.filter(deadline => deadline.cat == catergories);
+        refreshDisplay();
+    }
+
+    // Display function, called every second or so
+    function refreshDisplay() {
+
+        var deadline_fmt = 'M/D/YYYY, h:mma z'
+        var now_fmt = 'M/D/YYYY, h:mm:ssa z'
+        var countdown_fmt = 'w [weeks], d [days], h[h] m[m] s[s]'
+        var here = moment.tz.guess()
+        var now = moment().tz(here);
+        $("#currtime").text("Current time: " + now.format(now_fmt));
+
+
+        // $("#academics-deadlines").click(function() {
+        //     filtered_dl = deadlines.filter(deadline => deadline.cat == 'Coursework' || deadline.cat == 'Conference');
+        //     console.log(filtered_dl);
+        // })
+
+        // $("#all-deadlines").click(function() {
+        //     filtered_dl = deadlines.filter(function(){return true;});
+        //     console.log(filtered_dl);
+        // })
+
+        // $("#personal-deadlines").click(function() {
+        //     filtered_dl = deadlines.filter(deadline => deadline.cat == 'Personal');
+        //     console.log(filtered_dl);
+        // })
+
+        // $("#jobs-deadlines").click(function() {
+        //     filtered_dl = deadlines.filter(deadline => deadline.cat == 'Software');
+        //     console.log(filtered_dl);
+        // })
+
+        // sort deadlines according to time left
+        deadlines.sort(function(a, b){
+            return moment.duration(a.deadline.diff(now)) >= moment.duration(b.deadline.diff(now)) ? 1 : -1
+        })
+
+        // calculate and display deadlines
+        for (var i = 0; i < deadlines.length; i++) {
+            var dl = deadlines[i];
+            var time_left = moment.duration(dl.deadline.diff(now))
+
+            warningString = "";
+            if ("approx" in dl) { warningString = "guess or based on previous year!"; }
+
+            var divid = "#deadline" + i;
+            if ("highlight" in dl) {
+                $(divid).css("background-color", "#EEF");
+                $(divid).hover(
+                    function() { $(this).css("background-color", "#DDF"); },
+                    function() { $(this).css("background-color", "#EEF"); }
+                );
+            }
+
+            $(divid).html(
+                "<div class=\"tld\">" + time_left.format(countdown_fmt) +
+                "</div>" +
+                "<a href=\"" + dl.url + "\" target=\"_blank\" id=link" + i + " style=\"text-decoration:none\"><div class=\"vd\">" + dl.venue + "</div></a>" +
+                "<div class=\"ad\">" + dl.area + "</div>" +
+                "<div class=\"td\"> Deadline: " + dl.deadline.tz(here).format(
+                    deadline_fmt) + "</div>" +
+                "<div class=\"wd\">" + warningString + "</div>"
+            );
+
+        }
+
+        if (backi !== -1) {
+            var dl = deadlines[backi];
+            $("#backfacetext").html(
+                dl.venue + "</br>" +
+                moment.duration(dl.deadline.diff(now)).format(countdown_fmt)
+            );
+        }
+
+    }
+
+    // int main(){}
+    $(document).ready(function() {
+        // create divs for all deadlines and insert into DOM
+        // var cw = deadlines.filter(deadline => deadline.area == 'Coursework');
+        for (var i = 0; i < deadlines.length; i++) {
+            var dl = deadlines[i];
+            $("<div class=dd id=deadline" + i + "></div>").appendTo(
+                "div#deadlinesdiv");
+            var divid = "#deadline" + i;
+            var linkid = "#link" + i;
+
+            $(divid).hide();
+            $(divid).fadeIn(200 * (i + 1), function() {}); // create a nice fade in effect
+
+        }
+
+        // set up deadline timer to redraw
+        setInterval(
+            function() { refreshDisplay(); },
+            1000
+        );
+
+        $("#backface").click(function() {
+            backi = -1;
+            $("#backface").fadeOut("slow");
+        });
+
+        $("#makeown").click(function() {
+            backi = -1;
+            $("#instrown").fadeToggle();
+        });
+
+        // $("#academics-deadlines").click(function() {
+        //     deadlines = deadlines.filter(deadline => deadline.area == 'Coursework' || deadline.area == 'Conference');
+        // })
+
+        // $("#all-deadlines").click(function() {
+        //     deadlines = deadlines.filter(function(){return true;});
+        // })
+
+        // $("#personal-deadlines").click(function() {
+        //     deadlines = deadlines.filter(deadline => deadline.area == 'Personal');
+        // })
+
+        // $("#job-deadlines").click(function() {
+        //     deadlines = deadlines.filter(deadline => deadline.area == 'Software');
+        // })
+
+        // draw!
+        refreshDisplay();
+
+    });
+    </script>
+    <style type="text/css">
+    /* Some resetting */
+
+    body {
+        font-family: Verdana, Helvetica, sans-serif;
+        font-size: 12px;
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        color: #222;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    /* Main content div */
+
+    #surround {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        width: 600px;
+        background-color: white;
+    }
+    /* Div that contains all deadlines */
+
+    #deadlinesdiv {}
+
+    #currtime {
+        font-size: 14px;
+    }
+
+    #bottompart {
+        text-align: center;
+    }
+    /* Page title */
+
+    h1 {
+        display: inline;
+        margin-right: 10px;
+        font-size: 35px;
+    }
+    /* Maintained by @karpathy */
+
+    #signature {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: center;
+        padding-top: 15px;
+        padding-right: 25px;
+        font-size: 14px;
+    }
+    /* The cells that contain each deadline */
+
+    .dd {
+        padding: 10px;
+        margin-bottom: 3px;
+        background-color: #EEE;
+        border: 1px solid #DDD;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .dd:hover {
+        background-color: #DDD;
+        border: 1px solid #AAA;
+    }
+    /* Time left description div */
+
+    .tld {
+        float: right;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 16px;
+    }
+    /* Area description div */
+
+    .ad {
+        font-family: monospace;
+    }
+    /* Time description div */
+
+    .td {}
+    /* Venue description div */
+
+    .vd {
+        font-weight: bold;
+        font-size: 16px;
+    }
+    /* Warning div */
+
+    .wd {
+        position: absolute;
+        bottom: 10px;
+        right: 8px;
+        color: #700;
+        font-size: 10px;
+    }
+
+    #backface {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: white;
+        display: none;
+        z-index: 888;
+    }
+
+    #backfacetext {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        font-size: 28px;
+        color: #555;
+        font-weight: bold;
+        z-index: 889;
+    }
+
+    #musiclink a {
+        color: #AAA;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+    }
+
+    #makeown {
+        text-decoration: underline;
+        color: #008;
+        cursor: pointer;
+    }
+
+    #instrown {
+        display: none;
+        background-color: #EEE;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="backface">
+        <div id="backfacetext"></div>
+    </div>
+    <div id="surround">
+        <h1>Countdown</h1>
+        <div id="currtime"></div>
+        <!-- <br />
+        <p style="text-align:center">
+            <a href="#" id='all-deadlines' >All</a> &nbsp;/&nbsp;
+            <a href="#" id='academics-deadlines' onclick="filterDeadlines('Coursework');">Academics</a> &nbsp;/&nbsp;
+            <a href="#" id='jobs-deadlines'>Jobs & Projects</a> &nbsp;/&nbsp;
+            <a href="#" id='personal-deadlines'>Personal</a> 
+        </p> -->
+        <br />
+        <br />
+        <div id="deadlinesdiv"></div>
+        <br />
+        <div id="bottompart">
+            <br />
+            <br />
+        </div>
+    </div>
+</body>
+
+</html>
