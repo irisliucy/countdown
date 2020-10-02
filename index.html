@@ -736,14 +736,14 @@
     // Fall 2020 Coursework
     // CS545 Robotics
     // HW2
-    deadlines.push({
-      venue: "CS545 HW2",
-      area: "Coursework",
-      cat: "Coursework",
-      deadline: moment.tz('2020-10-04 23:59:59', 'America/Los_Angeles'),
-      url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
-      highlight: 1,
-    });
+    // deadlines.push({
+    //   venue: "CS545 HW2",
+    //   area: "Coursework",
+    //   cat: "Coursework",
+    //   deadline: moment.tz('2020-10-06 23:59:59', 'America/Los_Angeles'),
+    //   url: "https://piazza.com/class/kebwokl3u45lt?cid=69",
+    //   highlight: 1,
+    // });
 
     // Lab2
     deadlines.push({
@@ -822,6 +822,25 @@
       highlight: 1,
     });
 
+    // SELF
+    deadlines.push({
+      venue: "SELP Workday",
+      area: "Personal",
+      cat: "Personal",
+      deadline: moment.tz('2020-11-07 19:59:59', 'America/Los_Angeles'),
+    //   url: "https://icml.cc/Conferences/2021/Dates",
+      highlight: 1,
+    });
+
+    deadlines.push({
+      venue: "Brutan 200KM",
+      area: "Personal",
+      cat: "Personal",
+      deadline: moment.tz('2021-05-28 19:59:59', 'Asia/Thimphu'),
+    //   url: "https://icml.cc/Conferences/2021/Dates",
+      highlight: 1,
+    });
+
     // filter doesn't work yet
     function filterDeadlines(catergories) {
         deadlines = deadlines.filter(deadline => deadline.cat == catergories);
@@ -858,6 +877,9 @@
         //     filtered_dl = deadlines.filter(deadline => deadline.cat == 'Software');
         //     console.log(filtered_dl);
         // })
+
+        // filter past event
+        deadlines = deadlines.filter(dl => moment.duration(dl.deadline.diff(now)) >= 0);
 
         // sort deadlines according to time left
         deadlines.sort(function(a, b){
